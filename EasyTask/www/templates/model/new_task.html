@@ -1,0 +1,23 @@
+
+<ion-view title="Create Task">
+    <ion-content padding="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Name</span>
+                    <input type="text" placeholder="" ng-model="newTask.name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Status</span>
+                    <input type="text" placeholder="" ng-model="newTask.status">
+                </label>
+            </ion-list>
+            <ion-item class="range range-positive">Range
+                <input type="range" value="50" min="0" max="100" ng-model="newTask.value">
+            </ion-item>
+            <div class="spacer" style="height: 40px;"></div>
+            <button class="button button-stable button-block" ng-click="createTask()">Create</button>
+            <a href="#/signup" class="button button-positive button-clear button-block" ng-click="cancel()">Cancel</a>
+        </form>
+    </ion-content>
+</ion-view>
