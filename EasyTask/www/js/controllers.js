@@ -1,6 +1,15 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope) {
+  $scope.barData={
+    labels: ['Mon', 'Tue', 'Wed'],
+    series: [[1, 2, 3]]
+  };
+
+  $scope.barOptions = {
+                seriesBarDistance: 15
+            };
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
@@ -37,7 +46,7 @@ angular.module('starter.controllers', [])
       $scope.modal.hide();});
   }
 
-  $scope.cancel = function(){
+  $scope.cancel = function(){;
     $scope.modal.hide();
     $scope.refresh();
   }
