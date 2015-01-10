@@ -1,6 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope) {
+  $scope.chartist = {};
+  $scope.chartist.barData = {
+    labels: ['Mon', 'Tue', 'Wed'],
+    series: [1, 2, 3]
+  };
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
