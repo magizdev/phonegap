@@ -1,0 +1,37 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="{{title}}">
+<ion-nav-buttons side="right">
+<button ng-click="addIndex()">New</button>
+</ion-nav-buttons>
+<ion-content class="padding" scroll="false" has-subheader>
+<div class="list">
+  <label class="item item-input item-floating-label">
+    <span class="input-label">姓名</span>
+    <input type="text" placeholder="姓名">
+  </label>
+  <label class = "item item-devider"></label>
+<label class="item item-input">
+  <span class="input-label">生日</span>
+  <input type="date">
+</label>
+<label class = "item item-devider"></label>
+    <label class="item item-radio">
+      <input type="radio" name="group">
+      <div class="item-content">
+        男宝
+      </div>
+    </label>
+    <label class="item item-radio">
+      <input type="radio" name="group">
+      <div class="item-content">
+        女宝
+      </div>
+    </label>
+  </div>
+</ion-content>
+</ion-view>

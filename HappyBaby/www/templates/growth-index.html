@@ -1,0 +1,14 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="{{title}}">
+	<ion-nav-buttons side="right">
+	  <button ng-click="addIndex()">New</button>
+	</ion-nav-buttons>
+  <ion-content class="padding" scroll="false" has-subheader>
+    <chartist class="ct-chart" chartist-data="lineData" chartist-chart-type="Line" chartist-chart-options="barOptions"/>
+  </ion-content>
+</ion-view>
