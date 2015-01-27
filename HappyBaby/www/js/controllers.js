@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['angular-chartist'])
+angular.module('happybaby.controllers', ['angular-chartist'])
 
 .controller('DailyCtrl', function($scope) {})
 

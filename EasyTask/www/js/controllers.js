@@ -2,8 +2,8 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {
   $scope.barData={
-    labels: ['Mon', 'Tue', 'Wed'],
-    series: [[1, 2, 3]]
+    labels: ['Mon', 'Tue', 'Wed', 'Thu'],
+    series: [[1, 2, 3, 4]]
   };
 
   $scope.barOptions = {

@@ -1,97 +1,105 @@
-angular.module('starter.services', [])
-
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Andrew Jostlin',
-    lastText: 'Did you get the ice cream?',
-    face: 'https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg'
-  }, {
-    id: 3,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 4,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'
-  }];
-
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
+angular.module('happybaby.services', [])
+.factory('DB', function($q, DB_CONFIG) {
+  var self = this;
+  self.db = null;
+   
+  self.init = function() {
+    //self.db = window.sqlitePlugin.openDatabase({name: DB_CONFIG.name}); //in production
+    self.db = window.openDatabase(DB_CONFIG.name, '1.0', DB_CONFIG.name, 10000000);
+     
+    angular.forEach(DB_CONFIG.tables, function(table) {
+      var columns = [];
+       
+      angular.forEach(table.columns, function(column) {
+        columns.push(column.name + ' ' + column.type);
+      });
+       
+      var query = 'CREATE TABLE IF NOT EXISTS ' + table.name + ' (' + columns.join(',') + ')';
+      self.query(query);
+      console.log('Table ' + table.name + ' initialized');
+    });
+  };
+   
+  self.query = function(query, bindings) {
+    bindings = typeof bindings !== 'undefined' ? bindings : [];
+    var deferred = $q.defer();
+     
+    self.db.transaction(function(transaction) {
+      transaction.executeSql(query, bindings, function(transaction, result) {
+        deferred.resolve(result);
+      }, function(transaction, error) {
+        deferred.reject(error);
+      });
+    });
+     
+    return deferred.promise;
+  };
+   
+  self.fetchAll = function(result) {
+    var output = [];
+     
+    for (var i = 0; i < result.rows.length; i++) {
+      output.push(result.rows.item(i));
     }
-  }
+    return output;
+  };
+   
+  self.fetch = function(result) {
+    return result.rows.item(0);
+  };
+   
+  return self;
 })
+.factory('Profile', function(DB) {
+  var self = this;
+  var birthday = new XDate(2014, 1, 1);
+  var profile = {'birthday': birthday};
 
-/**
- * A simple example service that returns some data.
- */
-.factory('Friends', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  // Some fake testing data
-  var friends = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    notes: 'Enjoys drawing things',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    notes: 'Odd obsession with everything',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Andrew Jostlen',
-    notes: 'Wears a sweet leather Jacket. I\'m a bit jealous',
-    face: 'https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg'
-  }, {
-    id: 3,
-    name: 'Adam Bradleyson',
-    notes: 'I think he needs to buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 4,
-    name: 'Perry Governor',
-    notes: 'Just the nicest guy',
-    face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'
-  }];
-
-
-  return {
-    all: function() {
-      return friends;
-    },
-    get: function(friendId) {
-      // Simple index lookup
-      return friends[friendId];
-    }
+  self.getAge = function(date) {
+    var xdate = new XDate(date);
+    xdate.clearTime();
+    return birthday.diffDays(xdate);
   }
+  return self;
+})
+.factory('GrowthIndex', function(DB, Profile) {
+  var self = this;
+  self.WEIGHT = 0;
+  self.HEIGHT = 1;
+
+  self.addWeight = function(date, value) {
+    var intDate = date.getTime();
+    DB.query('insert into growthindex(date, giType, giValue) values(?,?,?)', [intDate, self.WEIGHT, value]);
+  };
+
+  self.getWeightChartData = function() {
+    console.log('in self.getWeightChartData');
+    return DB.query('select * from growthindex where giType = ? order by date', [self.WEIGHT]).then(function(result) {
+      console.log('lalala');
+      var rowdata = DB.fetchAll(result);
+      var labels = [];
+      var series = [];
+      console.log(rowdata);
+      for(var i=0; i< rowdata.length; i++){
+        console.log(rowdata[i]);
+        console.log(rowdata[i].date);
+        var age = Profile.getAge(rowdata[i].date);
+        var value = rowdata[i].giValue;
+
+        labels.push(age);
+        series.push(value);
+      }
+
+      var chartData = {};
+      chartData.labels = labels;
+      chartData.series = [];
+      chartData.series.push(series);
+      console.log(chartData);
+      return chartData;
+    }, function(err){
+      console.log(err);
+    });
+  }
+
+  return self;
 });

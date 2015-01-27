@@ -19,7 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
   });
-  //DB.init();
+  DB.init();
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
