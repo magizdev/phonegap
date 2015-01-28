@@ -59,6 +59,28 @@ angular.module('happybaby.services', [])
     var xdate = new XDate(date);
     xdate.clearTime();
     return birthday.diffDays(xdate);
+  };
+
+  self.load = function() {
+    return DB.query('select * from profile').then(function(result) {
+      console.log(result.rows.length);
+      if(result.rows.length == 1){
+        var profile = DB.fetch(result);
+        profile.birthday = new XDate(profile.birthday);
+        return profile;
+      } else {
+        return {};
+      }
+    })
+  };
+
+  self.update = function(profile) {
+    DB.query('insert into profile(name, birthday, gender, birthWeight, birthHeight) values(?, ?, ?, ?, ?)', 
+      [profile.name, profile.birthday.getTime(), profile.gender, profile.birthWeight, profile.birthHeigh]).then(function(result){
+
+      }, function(err) {
+        console.log(err);
+      });
   }
   return self;
 })

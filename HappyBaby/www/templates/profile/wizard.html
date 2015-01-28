@@ -6,31 +6,33 @@
 -->
 
   
-<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true">
+<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true" ng-show="loaded">
 <ion-slide>
 <ion-content class="padding" scroll="false" has-subheader>
 <div class="list">
   <label class="item item-input item-floating-label">
     <span class="input-label">姓名</span>
-    <input type="text" placeholder="姓名">
+    <input type="text" placeholder="姓名" ng-model="profile.name">
   </label>
   <label class = "item item-devider"></label>
   <label class="item item-input">
     <span class="input-label">生日</span>
-    <input type="date">
+    <input type="date" ng-model="profile.birthday">
   </label>
   <label class = "item item-devider"></label>
   <label class="item item-radio">
-    <input type="radio" name="group">
+    <input type="radio" name="group" ng-model="profile.gender" value="0">
     <div class="item-content">
       男宝
     </div>
+    <i class="radio-icon ion-checkmark" ng-show="profile.gender == 0"></i>
   </label>
   <label class="item item-radio">
-    <input type="radio" name="group">
+    <input type="radio" name="group" ng-model="profile.gender" value="1">
     <div class="item-content">
       女宝
     </div>
+    <i class="radio-icon ion-checkmark" ng-show="profile.gender == 1"></i>
   </label>
 </div>
 </ion-content>
@@ -39,17 +41,19 @@
   <ion-content class="padding" scroll="false" has-subheader>
     
   <span class="input-label">出生身高</span>
-  <input type="number">
+  <input type="number" ng-model="profile.birthHeight">
     </label>
     
   <span class="input-label">出生体重</span>
-  <input type="number">
+  <input type="number" ng-model="profile.birthWeight">
     </label>
   </ion-content>
 </ion-slide>
 <ion-slide>
 <ion-content>
-<ion-nav-view name='avatar'></ion-nav-view>
+<button class="button button-block button-positive" ng-click="save()">
+  Save
+</button>
 </ion-content>
 </ion-slide>
 </ion-slide-box>

@@ -31,8 +31,13 @@ angular.module('happybaby', ['ionic', 'happybaby.controllers', 'happybaby.servic
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+  .state('profile', {
+    url: '/profile',
+    templateUrl: 'templates/profile/wizard.html',
+    controller: 'ProfileCtrl'
+  })
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
@@ -99,6 +104,6 @@ angular.module('happybaby', ['ionic', 'happybaby.controllers', 'happybaby.servic
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/daily');
+  $urlRouterProvider.otherwise('/profile');
 
 });
