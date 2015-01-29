@@ -54,19 +54,19 @@ angular.module('happybaby.services', [])
   var self = this;
   self.profile = {};
 
-  self.getAge = function(birthday, date) {
+  self.getAge = function(date) {
     var xdate = new XDate(date);
     xdate.clearTime();
-    return birthday.diffDays(xdate);
+    return self.profile.xbirthday.diffDays(xdate);
   };
 
   self.load = function() {
     return DB.query('select * from profile').then(function(result) {
       console.log(result.rows.length);
       if(result.rows.length == 1){
-        var profile = DB.fetch(result);
-        profile.birthday = new XDate(profile.birthday);
-        return profile;
+        self.profile = DB.fetch(result);
+        self.profile.xbirthday = new XDate(self.profile.birthday);
+        return self.profile;
       } else {
         return {};
       }
@@ -108,7 +108,7 @@ angular.module('happybaby.services', [])
       for(var i=0; i< rowdata.length; i++){
         console.log(rowdata[i]);
         console.log(rowdata[i].date);
-        var age = Profile.getAge(profile.birthday, rowdata[i].date);
+        var age = Profile.getAge(rowdata[i].date);
         var value = rowdata[i].giValue;
 
         labels.push(age);
