@@ -31,7 +31,9 @@ angular.module('happybaby.controllers', ['angular-chartist'])
 			$scope.loaded = true;
 			$scope.profile = result;
 			$scope.profile.name = '';
-			$scope.profile.birthday = new Date();
+			var now = new XDate();
+			now.clearTime();
+			$scope.profile.birthday = new Date(now.getTime());
 			$scope.profile.gender = 0;
 			$scope.profile.birthWeight = 3.5;
 			$scope.profile.birthHeight = 50;

@@ -52,10 +52,9 @@ angular.module('happybaby.services', [])
 })
 .factory('Profile', function(DB) {
   var self = this;
-  var birthday = new XDate(2014, 1, 1);
-  var profile = {'birthday': birthday};
+  self.profile = {};
 
-  self.getAge = function(date) {
+  self.getAge = function(birthday, date) {
     var xdate = new XDate(date);
     xdate.clearTime();
     return birthday.diffDays(xdate);
@@ -77,7 +76,7 @@ angular.module('happybaby.services', [])
   self.update = function(profile) {
     DB.query('insert into profile(name, birthday, gender, birthWeight, birthHeight) values(?, ?, ?, ?, ?)', 
       [profile.name, profile.birthday.getTime(), profile.gender, profile.birthWeight, profile.birthHeigh]).then(function(result){
-
+        self.load();
       }, function(err) {
         console.log(err);
       });
@@ -88,6 +87,10 @@ angular.module('happybaby.services', [])
   var self = this;
   self.WEIGHT = 0;
   self.HEIGHT = 1;
+  var profile = {};
+  Profile.load().then(function(result) {
+    console.log('profile loaded' + result.birthday);
+    profile = result;});
 
   self.addWeight = function(date, value) {
     var intDate = date.getTime();
@@ -105,7 +108,7 @@ angular.module('happybaby.services', [])
       for(var i=0; i< rowdata.length; i++){
         console.log(rowdata[i]);
         console.log(rowdata[i].date);
-        var age = Profile.getAge(rowdata[i].date);
+        var age = Profile.getAge(profile.birthday, rowdata[i].date);
         var value = rowdata[i].giValue;
 
         labels.push(age);
