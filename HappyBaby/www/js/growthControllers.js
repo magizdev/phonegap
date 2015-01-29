@@ -8,10 +8,8 @@ angular.module('happybaby.controllers')
     $scope.modal = modal;
   });
   $scope.title = 'Weight';
-  $scope.lineData = {
-    labels:['test'],
-    series: [[1]]
-  };
+  $scope.loaded = false;
+  $scope.lineData = {};
   $scope.barOptions = {
     seriesLineDistanse: 15
   };
@@ -25,6 +23,9 @@ angular.module('happybaby.controllers')
   $scope.loadData = function() {
     GrowthIndex.getWeightChartData().then(function(chartData){
       $scope.lineData = chartData;
+      if(chartData.labels) {
+        $scope.loaded = true;
+      }
     })
   };
 

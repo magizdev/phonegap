@@ -9,6 +9,6 @@
 	  <button ng-click="addIndex()">Record</button>
 	</ion-nav-buttons>
   <ion-content class="padding" scroll="false" has-subheader>
-    <chartist class="ct-chart" chartist-data="lineData" chartist-chart-type="Line" chartist-chart-options="barOptions"/>
+    <chartist ng-if="loaded" class="ct-chart" chartist-data="lineData" chartist-chart-type="Line" chartist-chart-options="barOptions"/>
   </ion-content>
 </ion-view>

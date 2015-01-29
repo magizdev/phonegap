@@ -26,7 +26,6 @@ angular.module('happybaby.controllers', ['angular-chartist'])
 	Profile.load().then(function(result){
 		console.log('result ' + result);
 		if(result.name) {
-			console.log('test');
 			$state.go('tab.daily');
 		} else {
 			$scope.loaded = true;
